@@ -14,7 +14,7 @@ export default function Posts() {
       <h1>Posts</h1>
       {/* I will fetch the posts here */}
       {/* I will map over the posts and display them here */}
-      {/* Conditional rendering idea: you can have a list of titles ............. */}
+      {/* Conditional rendering idea: you can have a list of titles and the user clicks on them to see the full post  */}
     </div>
   );
 }

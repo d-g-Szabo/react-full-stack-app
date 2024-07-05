@@ -20,7 +20,8 @@ export default function form() {
   return (
     <>
       {/* you need to have a form here with two events: one to submit, one to track changes */}
-      {/* remeber to be consitent with how you name the name attribute!!! the same attribute in your input....................... */}
+      {/* remember to be consistent with how you name the name attribute!!!!
+  the name attribute in your input should be the same as the database column where you are storing the data  */}
     </>
   );
 }
