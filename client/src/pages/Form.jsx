@@ -18,10 +18,11 @@ export default function form() {
   // we need to set the properties for the new object
   // setFormData({...formData, [e.target.name]: e.target.value})
   return (
-    <>
+    <form>
+      <h2>Form</h2>
       {/* you need to have a form here with two events: one to submit, one to track changes */}
       {/* remember to be consistent with how you name the name attribute!!!!
   the name attribute in your input should be the same as the database column where you are storing the data  */}
-    </>
+    </form>
   );
 }
