@@ -1,6 +1,6 @@
 // This is the form component
 
-export default function form() {
+export default function Form() {
   // we need state to save the form data
   // formData = {key: value, key: value}
 
