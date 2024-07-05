@@ -39,8 +39,19 @@ app.get("/", (req, res) => {
 app.get("/getFormData", async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT posts.title, posts.content, posts.likes, categories.name AS "category" FROM posts, categories WHERE posts.category_id = categories.id`
+      `SELECT posts.title, posts.content, posts.likes, categories.name AS "category", posts.id FROM posts, categories WHERE posts.category_id = categories.id ORDER BY posts.id`
     );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error executing GET query:", error);
+    res.status(500).send("Server Error");
+  }
+});
+
+// GET endpoint --> for categories
+app.get("/getCategories", async (req, res) => {
+  try {
+    const result = await db.query(`SELECT * FROM categories`);
     res.json(result.rows);
   } catch (error) {
     console.error("Error executing GET query:", error);
@@ -68,8 +79,28 @@ app.put("/updateFormData/:id", async (req, res) => {
   try {
     const dataId = req.params.id;
     const result = await db.query(
-      `UPDATE tableName SET name = $1, email = $2, message = $3 WHERE id = $4 RETURNING *`,
-      [req.body.name, req.body.email, req.body.message, dataId]
+      `UPDATE posts SET title = $1, content = $2, likes = $3, category_id = $4 WHERE id = $5 RETURNING *`,
+      [
+        req.body.title,
+        req.body.content,
+        req.body.likes,
+        req.body.category_id,
+        dataId,
+      ]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error executing PUT query:", error);
+    res.status(500).send("Server Error");
+  }
+});
+
+app.put("/updateLikes/:id", async (req, res) => {
+  try {
+    const dataId = req.params.id;
+    const result = await db.query(
+      `UPDATE posts SET likes = $1 WHERE id = $2 RETURNING *`,
+      [req.body.likes, dataId]
     );
     res.json(result.rows[0]);
   } catch (error) {
@@ -81,11 +112,8 @@ app.put("/updateFormData/:id", async (req, res) => {
 app.delete("/deleteFormData/:id", async (req, res) => {
   try {
     const dataId = req.params.id;
-    const result = await db.query(
-      `DELETE FROM tableName WHERE id = $1 RETURNING *`,
-      [dataId]
-    );
-    res.json(result.rows[0]);
+    const result = await db.query(`DELETE FROM posts WHERE id = $1`, [dataId]);
+    res.status(200).send("Post deleted successfully");
   } catch (error) {
     console.error("Error executing DELETE query:", error);
     res.status(500).send("Server Error");
