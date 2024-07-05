@@ -1,0 +1,27 @@
+.post-container {
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.post-container div div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.post-container p {
+  text-align: left;
+}
