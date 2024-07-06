@@ -1,14 +1,18 @@
-// Here I will fetch the posts from the server, which is getting the posts from the database
-
 import { useEffect } from "react";
 import { useState } from "react";
 import "./Posts.css";
+import { useSearchParams } from "react-router-dom";
 
 export default function Posts() {
   // we need state to save the values of posts
   const [posts, setPosts] = useState([]);
-  // we need useEffect to fetch the data
 
+  // searchParams is an array of key-value pairs from the URL query string (e.g. ?filter=category)
+  const [searchParams, setSearchParam] = useSearchParams();
+  // we need to get the filter from the URL
+  const filter = searchParams.get("filter");
+
+  // we need useEffect to fetch the data from the server
   useEffect(() => {
     async function getPosts() {
       const response = await fetch("http://localhost:8008/getFormData");
@@ -19,14 +23,18 @@ export default function Posts() {
     getPosts();
   }, [posts]);
 
-  // useEffect to fetch the posts to the server if the posts state changes eg. if a post got a like
+  // State for storing the category data
+  const [categories, setCategories] = useState([]);
 
-  // useEffect(() => {
-  //we need a function to get the posts
-  // this function is async and uses fetch
-  // once you fetch the data, you will set the state variable to be the posts data
-  // }, [])
-  // DECESION: you can have a separate function to get the posts, and call the function in the useEffect hookl or you can write the function directly in the useEffect hook
+  // useEffect to fetch the categories
+  useEffect(() => {
+    async function getCategories() {
+      const response = await fetch("http://localhost:8008/getCategories");
+      const data = await response.json();
+      setCategories(data);
+    }
+    getCategories();
+  }, []);
 
   // function to delete a post on the click of a button
   function deletePost(id) {
@@ -43,15 +51,17 @@ export default function Posts() {
   function likePost(id) {
     // Unary Plus ("+" works like: "parseInt()") Operator to convert the string to a number
     let like = 0;
+    // loop through the posts to find the post with the id
     for (let i = 0; i < posts.length; i++) {
       if (posts[i].id === id) {
+        // if the id matches
+        // increment the likes by 1
         like = +posts[i].likes + 1;
       }
     }
-    console.log(posts);
 
+    // post request to update the likes
     let post = `{"likes": "${like}"}`;
-    // const post = `{"title":"${posts[id].title}","content":"${posts[id].content}","likes":${like},"category_id":${posts[id].id}}`;
     console.log(post);
     fetch(`http://localhost:8008/updateLikes/${id}`, {
       method: "PUT",
@@ -60,17 +70,36 @@ export default function Posts() {
         "Content-Type": "application/json",
       },
     });
-    console.log(posts);
   }
+
+  // function to handle the change of the select
+  const handleChange = (event) => {
+    // setSearchParam() is a function that updates the URL query string
+    setSearchParam({ filter: event.target.value });
+  };
 
   return (
     <div>
       <h2>Posts</h2>
-      {/* I will fetch the posts here */}
       {/* I will map over the posts and display them here */}
-      {/* Conditional rendering idea: you can have a list of titles and the user clicks on them to see the full post  */}
+      <p>Filter: {filter}</p>
+      <select onChange={handleChange} value={filter || ""}>
+        <option value="">Select</option>
+        {categories.map((category, index) => {
+          // map over the categories
+          // return an option for each category
+          return (
+            <option key={index} value={category.name}>
+              {category.name}
+            </option>
+          );
+        })}
+      </select>
       {posts.map((post, index) => {
-        return (
+        // map over the posts
+        // return a div for each post
+        // if the category of the post matches the filter or there is no filter, display the post
+        return post.category === filter || !filter ? (
           <div className="post-container" key={index}>
             <div>
               <div>
@@ -99,7 +128,7 @@ export default function Posts() {
               </button>
             </div>
           </div>
-        );
+        ) : null;
       })}
     </div>
   );
