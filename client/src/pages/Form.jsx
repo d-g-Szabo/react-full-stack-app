@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Form() {
   // State for storing the category data
@@ -12,7 +13,7 @@ export default function Form() {
       setCategories(data);
     }
     getCategories();
-  }, []);
+  }, [categories]);
 
   // we need state to save the form data
   // formData = {key: value, key: value}
@@ -24,7 +25,7 @@ export default function Form() {
 
   // a handle submit function
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault(); // prevent default form submission
     fetch("http://localhost:8008/postFormData", {
       method: "POST",
       body: JSON.stringify(formData),
@@ -33,19 +34,31 @@ export default function Form() {
       },
     });
   }
-  // function handleSubmit() {
-  //prevent default
-  //fetch post to the endpoint
-  //     fetch("url", {method: "POST", body: JSON.stringify(formData), headers: {"Content-Type": "application/json"}})
-  // }
-  // a handle change function
+
+  // function handleChange
+  // we need to add the values from the initial state
+  // we need to set the properties for the new object
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-  // function handleChange(e) {
-  // we need to add the values from the initial state
-  // we need to set the properties for the new object
-  // setFormData({...formData, [e.target.name]: e.target.value})
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLinkClick = (e) => {
+    // Prevent default link behavior
+    e.preventDefault();
+    // Check if the current pathname matches the link's target
+    if (location.pathname === "/form/new-category") {
+      // Navigate back or to a different route
+      navigate(-1); // Go back to the previous page
+      // Or navigate('/some-other-route'); to go to a specific route
+    } else {
+      // Proceed to the link's target
+      navigate("/form/new-category");
+    }
+  };
+
   return (
     <form onChange={handleChange} onSubmit={handleSubmit}>
       <h2>New post</h2>
@@ -66,6 +79,10 @@ export default function Form() {
           );
         })}
       </select>
+      <Link to="/form/new-category" onClick={handleLinkClick}>
+        New Category
+      </Link>
+      <Outlet />
       <button type="submit">Submit</button>
       <p>{JSON.stringify(formData)}</p>
     </form>

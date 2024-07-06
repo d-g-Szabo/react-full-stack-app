@@ -59,6 +59,20 @@ app.get("/getCategories", async (req, res) => {
   }
 });
 
+// POST endpoint --> to add a new category
+app.post("/addCategory", async (req, res) => {
+  try {
+    const result = await db.query(
+      `INSERT INTO categories (name) VALUES ($1) RETURNING *`,
+      [req.body.name]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error executing POST query:", error);
+    res.status(500).send("Server Error");
+  }
+});
+
 // POST endpoint --> we receive the body from client and we INSERT the body into the database
 app.post("/postFormData", async (req, res) => {
   try {
