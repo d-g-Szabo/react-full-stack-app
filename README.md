@@ -46,7 +46,7 @@ I met all the requirements for this assignment.
 
 # Trello project planning:
 
-![](https://github.com/d-g-Szabo/react-full-stack-app/blob/ca99ec2c35d12d46869c01f128fd5ed8eed837d0/client/public/database_driven_full_stack_react___express_app_trello.jpg)
+![](https://github.com/d-g-Szabo/react-full-stack-app/blob/7ebfb55698386939315740c6befbb125b88703ae/client/public/database_driven_full_stack_react___express_app-trello.jpg)
 
 # Stretch Goals:
 
