@@ -7,7 +7,7 @@ export default function NewCategory() {
     e.preventDefault();
     const categoryName = newCategory;
     console.log(categoryName);
-    fetch("http://localhost:8008/addCategory", {
+    fetch("https://react-full-stack-app-server-5bod.onrender.com/addCategory", {
       method: "POST",
       body: JSON.stringify({ name: categoryName }),
       headers: {

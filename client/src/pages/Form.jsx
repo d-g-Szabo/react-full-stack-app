@@ -8,7 +8,9 @@ export default function Form() {
   // useEffect to fetch the categories
   useEffect(() => {
     async function getCategories() {
-      const response = await fetch("http://localhost:8008/getCategories");
+      const response = await fetch(
+        "https://react-full-stack-app-server-5bod.onrender.com/getCategories"
+      );
       const data = await response.json();
       setCategories(data);
     }
@@ -26,13 +28,16 @@ export default function Form() {
   // a handle submit function
   function handleSubmit(e) {
     e.preventDefault(); // prevent default form submission
-    fetch("http://localhost:8008/postFormData", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    fetch(
+      "https://react-full-stack-app-server-5bod.onrender.com/postFormData",
+      {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 
   // function handleChange

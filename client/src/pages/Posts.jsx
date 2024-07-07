@@ -15,7 +15,9 @@ export default function Posts() {
   // we need useEffect to fetch the data from the server
   useEffect(() => {
     async function getPosts() {
-      const response = await fetch("http://localhost:8008/getFormData");
+      const response = await fetch(
+        "https://react-full-stack-app-server-5bod.onrender.com/getFormData"
+      );
       const data = await response.json();
       setPosts(data);
     }
@@ -29,7 +31,9 @@ export default function Posts() {
   // useEffect to fetch the categories
   useEffect(() => {
     async function getCategories() {
-      const response = await fetch("http://localhost:8008/getCategories");
+      const response = await fetch(
+        "https://react-full-stack-app-server-5bod.onrender.com/getCategories"
+      );
       const data = await response.json();
       setCategories(data);
     }
@@ -39,12 +43,15 @@ export default function Posts() {
   // function to delete a post on the click of a button
   function deletePost(id) {
     // fetch to the server to delete the post on id
-    fetch(`http://localhost:8008/deleteFormData/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    fetch(
+      `https://react-full-stack-app-server-5bod.onrender.com/deleteFormData/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 
   // function to like a post on the click of a button
@@ -63,13 +70,16 @@ export default function Posts() {
     // post request to update the likes
     let post = `{"likes": "${like}"}`;
     console.log(post);
-    fetch(`http://localhost:8008/updateLikes/${id}`, {
-      method: "PUT",
-      body: post,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    fetch(
+      `https://react-full-stack-app-server-5bod.onrender.com/updateLikes/${id}`,
+      {
+        method: "PUT",
+        body: post,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 
   // function to handle the change of the select
